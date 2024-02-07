@@ -222,7 +222,7 @@ if (!isset($_SESSION['access_token'])) {
                 // alert("register");
 
                 // toastr.success(response["message"]);
-                                window.location.href = "../userData.php";
+                               window.location.href = "../userData.php";
             }
             else {
                 toastr.error(response["message"]);

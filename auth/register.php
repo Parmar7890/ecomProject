@@ -16,7 +16,7 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
   <!--contry code-->
-  <link rel="stylesheet" href="../plugins/countrycode/build/css/intlTelInput.css">
+  <!-- <link rel="stylesheet" href="../plugins/countrycode/build/css/intlTelInput.css"> -->
   <link rel="stylesheet" href="../plugins/toastr/toastr.min.css">
   <style>
     .iti__country-list {
@@ -141,7 +141,7 @@
   <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- AdminLTE App -->
   <script src="../dist/js/adminlte.min.js"></script>
-  <script src="../plugins/countrycode/build/js/intlTelInput-jquery.js"></script>
+  <!-- <script src="../plugins/countrycode/build/js/intlTelInput-jquery.js"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>
 
@@ -150,15 +150,7 @@
   <script>
 
 
-    $("#telephone").intlTelInput({
-      initialCountry: "auto",
-      geoIpLookup: function (success, failure) {
-        $.get("https://ipinfo.io", function () { }, "jsonp").always(function (resp) {
-          var countryCode = (resp && resp.country) ? resp.country : "in";
-          success(countryCode);
-        });
-      },
-    });
+  
 
     $(document).ready(function () {
       $("#eye").click(function () {
@@ -262,6 +254,7 @@
         if(isValid){
           // submitHandler: function(form) {
           var frm = $("#registerForm").serializeArray();
+          // console.log(frm);
           $.ajax({
             type: "POST",
             url: "../backend/authcontroller.php",

@@ -34,13 +34,14 @@ session_start();
  
   <?php
    include_once('navbar.php');
-   include_once('sidebar.php');
+//    include_once('sidebar.php');
   
   ?>
 <div class="container">
 <form method="post">
         <table id="myTable">
-            <div><buttton class="btn btn-primary" id="deleteBtn">delete</buttton></div>
+            <!-- <div><buttton class="btn btn-primary" id="deleteBtn">delete</buttton></div> -->
+            
         </table>
 </form>
 </div>
@@ -55,11 +56,33 @@ include_once('footer.php');
   </aside>
   <!-- /.control-sidebar -->
 </div>
-<!-- ./wrapper -->
+<div><button type="button" class="btn btn-default" data-toggle="modal" data-target="#deleteBtn">delete Modal</button></div>
+ <!--------------------------- /.modal start------------------>
+<div class="modal fade" id="deleteBtn">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Default Modal</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>Are you sure you want to delete&hellip;</p>
+              </div>
+              <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="confirmDelete" class="btn btn-primary">Delete</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+      <!--------------------------- /.modal end------------------>
 
-<!-- jQuery -->
+
 <script src="plugins/jquery/jquery.min.js"></script>
-
 <script src="dist/js/adminlte.js"></script>
 <script src="./plugins/toastr/toastr.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>

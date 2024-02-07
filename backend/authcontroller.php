@@ -10,6 +10,8 @@ class Authcontroller{
         $this->conn = $obj->connection();
     }
     function insert_user($data) {
+        // echo "<pre>";
+        // print_r($data);
  $response = [];
  try {
     $email = $data[3]['value'];
@@ -25,6 +27,7 @@ class Authcontroller{
     $phoneCheckStmt->bindParam(':phone', $phone);
     $phoneCheckStmt->execute();
     $phoneExists = $phoneCheckStmt->fetchColumn();
+    
 
     if ($emailExists) {
         $response["status"] = 400;
@@ -44,7 +47,7 @@ class Authcontroller{
         $response["message"]  = "User registered successfully";
     }
 } catch (PDOException $e) {
-    $response["status"] = 404;
+    $response["status"] = 400;
     $response["message"] = "User registration failed";
 }
 
@@ -58,6 +61,7 @@ return $response;
 //    print_r($data);
             $response = [];
             $email = $data[0]['value'];
+           
             $password = $data[1]['value'];
             $passwordmd5 = md5($data[1]['value']);
 
@@ -66,14 +70,11 @@ return $response;
             $emailCheckStmt->bindParam(':password', $passwordmd5);
             $emailCheckStmt->execute();
             $userData  = $emailCheckStmt->fetchAll(PDO::FETCH_ASSOC);
-            $_SESSION["id"] = $userData [0]['id'];
-            
-        //  echo "<pre>";
-        //  print_r($userData);
+            // $userData = $userData[0];
         
         
         
-            if ($email == $userData[0]['email'] && $userData[0]['password'] == $passwordmd5) {
+            if (!empty($userData)) {
                 $response["status"] = 200;
                 $response["message"] = "login successfully";
             }else{ 

@@ -21,22 +21,41 @@ class productController{
 
 
     function editData($data){
-
+    //   echo "<pre>";
+    //   print_r($data);
         $response = array();
         try {
-            $query = $this->conn->prepare("UPDATE tbl_product SET name=:name, brand=:brand, price=:price, slug=:slug, tag=:tag, image=:image WHERE id=:id");
-            $query->bindParam(':id', $data['id']);
-            $query->bindParam(':name', $data['name']);
-            $query->bindParam(':brand', $data['brand']);
-            $query->bindParam(':price', $data['price']);
-            $query->bindParam(':slug', $data['slug']);
-            $query->bindParam(':tag', $data['tag']);
-            $query->bindParam(':image', $data['image']);
-            $query->execute();
-            
+    
+            // $fetch_query = $this->conn->prepare("SELECT * FROM tbl_product");
+            // $fetch_query->execute();
+            // $product_result = $fetch_query->fetchAll(PDO::FETCH_ASSOC);
           
-            $response["status"] = 200;
-            $response["message"] = "Update successful";
+            //    echo "<pre>";
+            //     print_r($product_result);
+                
+            // if($data[0] != $product_result){
+                $query = $this->conn->prepare("UPDATE tbl_product SET name=:name, brand=:brand, price=:price, slug=:slug, tag=:tag, image=:image WHERE id=:id");
+                $query->bindParam(':id', $data['id']);
+                $query->bindParam(':name', $data['name']);
+                $query->bindParam(':brand', $data['brand']);
+                $query->bindParam(':price', $data['price']);
+                $query->bindParam(':slug', $data['slug']);
+                $query->bindParam(':tag', $data['tag']);
+                $query->bindParam(':image', $data['image']);
+                $query->execute();
+                
+                
+
+                $response["status"] = 200;
+                $response["message"] = "update successfully";
+                
+                  
+
+                //  }else{
+                //     $response["status"] = 400;
+                //     $response["message"] = null;
+                //  }
+
         } catch(PDOException $e) {
             $response["status"] = 404;
             $response["message"] = "Update failed: " . $e->getMessage();

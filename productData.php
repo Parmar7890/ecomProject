@@ -146,10 +146,15 @@ $(document).ready(function(){
            
             {
               title:"IMAGE",
+              data:"image",
                 targets: [0], 
                 render: function (data, type, row, meta) {
-                    return '<input type="file">';
-                }
+        // Assuming 'data' contains the URL of the image
+        var imageHTML = '<img src="' + data + '" style="max-width: 100px; max-height: 100px; margin-right: 30px;">';
+        var inputHTML = '<input type="file">';
+
+        return imageHTML + inputHTML;
+    }
             }
          
         ],
@@ -201,7 +206,7 @@ $(document).ready(function(){
           table.ajax.reload();
           $("#deleteBtn").modal("hide");
         }else{
-          toastr.error(response.message);
+          // toastr.error(response.message);
         }
       
     }
@@ -224,8 +229,8 @@ $(document).ready(function(){
     });
 
     function myCallbackFunction (updatedCell, updatedRow, oldValue) {
-        // console.log("The new value for the cell is: " + updatedCell.data());
-        // console.log("The values for each cell in that row are: " + updatedRow.data());
+       
+        console.log(updatedCell.data());
         $.ajax({
           type:"POST",
           url:"./backend/productController.php",
@@ -236,12 +241,11 @@ $(document).ready(function(){
           success:function(response){
             response = JSON.parse(response);
             console.log(response);
-            if (response["status"] == 200) { 
+            if (oldValue != updateCell.data()) { 
     toastr.success(response.message); 
     // $("#editChange").modal("show");
     // toastr.error(response["message"]);
-}else{
-  toastr.error(response["message"]);
+
 }
 
           }
