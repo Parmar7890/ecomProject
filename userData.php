@@ -18,6 +18,7 @@ session_start();
 
   <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- JQVMap -->
+  
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <link rel="stylesheet" href="./plugins/toastr/toastr.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
@@ -34,7 +35,7 @@ session_start();
  
   <?php
    include_once('navbar.php');
-//    include_once('sidebar.php');
+   include_once('sidebar.php');
   
   ?>
 <div class="container">

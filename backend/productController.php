@@ -64,8 +64,9 @@ class productController{
     }
 
     function insertData($data){
-        echo "<pre>";
-        print_r($data);
+        // echo "<pre>";
+        // print_r($data);
+        // die;
         $response = array();
         try{
             // echo "<pre>";
@@ -76,9 +77,10 @@ class productController{
             $tag = $data['tag'];
             $image_name = $data['image_name'];
             $image_temp = $data['image_temp'];
-            $image_path = "./uploads/" . basename($image_name); 
+            $image_path = "./uploads/" . $image_name; 
             
-            move_uploaded_file($image_temp, $image_path); 
+            // move_uploaded_file(, $image_path); 
+            move_uploaded_file($image_path,$image_temp); 
             
             $insertQuery = $this->conn->prepare("INSERT INTO tbl_product (name, brand, price, slug, tag, image) VALUES (:product_name, :brand, :price, :slug, :tag, :image)");
             $insertQuery->bindParam(':product_name', $product_name);
@@ -86,7 +88,7 @@ class productController{
             $insertQuery->bindParam(':price', $price);
             $insertQuery->bindParam(':slug', $slug);
             $insertQuery->bindParam(':tag', $tag);
-            $insertQuery->bindParam(':image', $image_path); 
+            $insertQuery->bindParam(':image', $image_name); 
             $insertQuery->execute();
        
             $response["status"] = 200;
@@ -145,6 +147,7 @@ if(isset($frmData) && isset($frmData["action"]) && $frmData["action"] == "delete
 }
 
 if (isset($_POST["action"]) && $_POST["action"] == "insertData") {
+
     $product_data = array(
         "product_name" => $_POST["product_name"],
         "brand" => $_POST["brand"],
@@ -154,6 +157,8 @@ if (isset($_POST["action"]) && $_POST["action"] == "insertData") {
         "image_name" => $_FILES["image"]["name"],
         "image_temp" => $_FILES["image"]["tmp_name"]
     );
+
+    
 
     // Ensure you include the necessary class or function definition for productController
     $obj = new productController();

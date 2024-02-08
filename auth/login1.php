@@ -145,7 +145,7 @@ if (!isset($_SESSION['access_token'])) {
       <!-- /.social-auth-links -->
 
       <p class="mb-1">
-        <a href="forgot-password.html">I forgot my password</a>
+        <a href="./forgot_password.php">I forgot my password</a>
       </p>
       <p class="mb-0">
         <a href="register.html" class="text-center">Register a new membership</a>
@@ -218,15 +218,19 @@ if (!isset($_SESSION['access_token'])) {
             }),
             dataType:"json",
             success: function (response) {
+              console.log(response);
               if (response["status"] == 200) {
                 // alert("register");
 
                 // toastr.success(response["message"]);
                                window.location.href = "../userData.php";
-            }
-            else {
+            }else if(response["status"] == 202){
+              // console.log("userlogin");
+              // window.location.href = "../wokiee_templete/html/index.php";
+            }else {
                 toastr.error(response["message"]);
             }
+            
             // },
             // error: function (xhr, status, error) {
             //   console.error(error);

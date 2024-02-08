@@ -183,10 +183,7 @@ $(document).ready(function(){
    
    
 
-//  function cnfDel(){
-//   $("#deleteBtn").modal("show");
 
-//  }
 
 
    
@@ -241,7 +238,7 @@ $(document).ready(function(){
           success:function(response){
             response = JSON.parse(response);
             console.log(response);
-            if (oldValue != updateCell.data()) { 
+            if (oldValue != updatedCell.data()) { 
     toastr.success(response.message); 
     // $("#editChange").modal("show");
     // toastr.error(response["message"]);

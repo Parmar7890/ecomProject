@@ -192,9 +192,9 @@
         var image = $("#image")[0].files[0];
         formData.append("image", image);
        
-    //     for (var pair of formData.entries()) {
-    //     console.log(pair[0] + ', ' + pair[1]);
-    // }
+        for (var pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+    }
 
     $.ajax({
     url: "../backend/productController.php",
@@ -208,7 +208,7 @@
             // if (response.status == 200) {
             //     toastr.success(response.message);
             //     setTimeout(function () {
-                    window.location.href = '../productData.php';
+                    // window.location.href = '../productData.php';
             //     }, 2000);
             // } else {
             //     toastr.error(response.message);

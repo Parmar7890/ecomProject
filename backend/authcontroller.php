@@ -65,24 +65,37 @@ return $response;
             $password = $data[1]['value'];
             $passwordmd5 = md5($data[1]['value']);
 
-            $emailCheckStmt = $this->conn->prepare("SELECT * FROM tbl_user WHERE email=:email AND password=:password");
+            $emailCheckStmt = $this->conn->prepare("SELECT * FROM tbl_user WHERE email=:email AND password=:password AND status='1'");
             $emailCheckStmt->bindParam(':email', $email);
             $emailCheckStmt->bindParam(':password', $passwordmd5);
             $emailCheckStmt->execute();
             $userData  = $emailCheckStmt->fetchAll(PDO::FETCH_ASSOC);
             // $userData = $userData[0];
+            $statusCheckStmt = $this->conn->prepare("SELECT * FROM tbl_user WHERE email=:email AND password=:password");
+            $statusCheckStmt->bindParam(':email', $email);
+            $statusCheckStmt->bindParam(':password', $passwordmd5);
+            $statusCheckStmt->execute();
+            $statusData = $statusCheckStmt->fetchAll(PDO::FETCH_ASSOC);
+        //    echo "<pre>";
+        //    print_r($statusData);
+        //    die;
+  
         
-        
+        $_SESSION['id'] = $statusData[0]['id'];
         
             if (!empty($userData)) {
                 $response["status"] = 200;
                 $response["message"] = "login successfully";
+            }elseif(!empty($statusData)){
+                 $response["status"] = 202;
+                 $response["message"] = "user login succesfully";
             }else{ 
              
 
                 $response["status"] = 400;
                 $response["message"] = "This invalid email and password"; 
             }
+            
             echo json_encode($response);
             return $response;
 
