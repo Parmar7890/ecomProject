@@ -1,3 +1,11 @@
+<?php  
+session_start();
+// if(empty($_SESSION['id'])){
+//   header("Location:../../auth/login1.php");
+// }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

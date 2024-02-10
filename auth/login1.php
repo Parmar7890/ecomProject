@@ -78,6 +78,14 @@ if(isset($_GET["code"]))
   <!--contry code-->
   <!-- <link rel="stylesheet" href="../plugins/countrycode/build/css/intlTelInput.css"> -->
   <link rel="stylesheet" href="../plugins/toastr/toastr.min.css">
+
+  <style>
+    .error-message {
+      color: red; /* Change color as per your preference */
+      font-size: 14px; /* Adjust font size */
+      font-style: italic; /* Adjust font style */
+    }
+  </style>
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -170,30 +178,32 @@ if (!isset($_SESSION['access_token'])) {
   <script src="../plugins/toastr/toastr.min.js"></script>
 
 <script>
-  $("#loginForm").validate({
-    rules:{
-      email:{
-        required: true,
-        // pattern: /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/
-      },
-      password:{
-        required: true,
-        pattern: /^[a-zA-Z0-9]*[!@#$%^&*()_+={}\[\]:;<>,.?\/~\\|-][a-zA-Z0-9]*$/,
-      }
-    },
-    messages:{
-      email:{
-        required: "email is required",
-        // pattern: "Please enter a valid email address"
-
-        
-      },
-      password:{
-        required: "password is required",
-        pattern: "invalid password"
-      }
-    }
-  })
+   $(document).ready(function() {
+      $("#loginForm").validate({
+        rules:{
+          email:{
+            required: true,
+            // pattern: /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/
+          },
+          password:{
+            required: true,
+            pattern: /^[a-zA-Z0-9]*[!@#$%^&*()_+={}\[\]:;<>,.?\/~\\|-][a-zA-Z0-9]*$/,
+          }
+        },
+        messages:{
+          email:{
+            required: "email is required",
+            // pattern: "Please enter a valid email address"
+          },
+          password:{
+            required: "password is required",
+            pattern: "invalid password"
+          }
+        },
+        errorElement: 'span',
+        errorClass: 'error-message',
+      });
+    });
 
  
 </script>
@@ -207,33 +217,29 @@ if (!isset($_SESSION['access_token'])) {
         if(isValid){
           // submitHandler: function(form) {
           var frm = $("#loginForm").serializeArray();
-          console.log(frm);
+          // console.log(frm);
   
           $.ajax({
-            type: "POST",
-            url: "../backend/authcontroller.php",
-            data:JSON.stringify({
-              action:'loginnew',
-              data:frm,
-            }),
-            dataType:"json",
-            success: function (response) {
-              console.log(response);
-              if (response["status"] == 200) {
-                // alert("register");
-
-                // toastr.success(response["message"]);
-                               window.location.href = "../userData.php";
-            }else if(response["status"] == 202){
-              // console.log("userlogin");
-              // window.location.href = "../wokiee_templete/html/index.php";
-            }else {
-                toastr.error(response["message"]);
-            }
-            
-            // },
-            // error: function (xhr, status, error) {
-            //   console.error(error);
+    type: "POST",
+    url: "../backend/authcontroller.php",
+    data: JSON.stringify({
+        action: 'loginnew',
+        data: frm,
+    }),
+    dataType: "json",
+    success: function (response) {
+        console.log(response);
+        if (response["status"] == 200) {
+            // alert("admin");
+            // toastr.success(response["message"]);
+            window.location.href = "../userData.php";
+        } else if (response["status"] == 202) {
+            // alert("user");
+            // console.log("userlogin");
+            window.location.href = "../wokiee_templete/html/index.php";
+        } else {
+            toastr.error(response["message"]);
+        }
             }
           })
         } 

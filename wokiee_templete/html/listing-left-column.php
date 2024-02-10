@@ -20,14 +20,30 @@ $query_product = $conn->prepare("SELECT * FROM tbl_product");
 
 $query_product->execute();
 $result_product = $query_product->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+
+
+// echo 'session id=' . $session_id = $_SESSION["id"];
+$cart_query = $conn->prepare("SELECT p.*,ct.id as cart_id FROM tbl_addtocart ct INNER JOIN tbl_product p on ct.product_id = p.id WHERE ct.user_id=:user_id");
+$cart_query->bindParam(':user_id', $_SESSION['id']);
+
+
+// $cart_query->bindParam(':user_id', $session_id, PDO::PARAM_INT);
+$cart_query->execute();
+$result_cart = $cart_query->fetchAll(PDO::FETCH_ASSOC);
+
+
 // echo "<pre>";
-// print_r($result_product);
+// print_r($result_cart);
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Mirrored from softali.net/victor/wookie/html/listing-left-column.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 15 Feb 2021 06:29:58 GMT -->
+
 <head>
 		<meta charset="utf-8">
 	<title>Wokiee - Responsive HTML5 Template</title>
@@ -37,7 +53,7 @@ $result_product = $query_product->fetchAll(PDO::FETCH_ASSOC);
 	<link rel="shortcut icon" href="favicon.ico">
 	<meta name="format-detection" content="telephone=no">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+	<link rel="stylesheet" href="../../../project/plugins/toastr/toastr.min.css">
 	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -601,46 +617,52 @@ $result_product = $query_product->fetchAll(PDO::FETCH_ASSOC);
 										</a> -->
 										<div class="tt-cart-content">
 											<div class="tt-cart-list">
+												
+<?php  
+$totalPrice = 0;
+if($result_cart){
+	foreach($result_cart as $row) {
+	$totalPrice = $totalPrice += $row["price"];
+
+?>
+
+
 												<div class="tt-item">
 													<a href="product.html">
 														<div class="tt-item-img">
-															<img src="images/loader.svg" data-src="images/product/product-01.jpg" alt="">
+															<img src="<?php echo '../../backend/uploads/' . $row["image"]; ?>" alt="">
 														</div>
 														<div class="tt-item-descriptions">
-															<h2 class="tt-title">Flared Shift Dress</h2>
+															<h2 class="tt-title"><?php echo $row["name"]; ?></h2>
 															<ul class="tt-add-info">
-																<li>Yellow, Material 2, Size 58,</li>
-																<li>Vendor: Addidas</li>
+																<!-- <li>Yellow, Material 2, Size 58,</li> -->
+																<li><?php echo $row["brand"]; ?></li>
 															</ul>
-															<div class="tt-quantity">1 X</div> <div class="tt-price">$12</div>
+															<div class="tt-quantity">1 X</div> <div class="tt-price"><?php echo $row["price"]; ?></div>
 														</div>
 													</a>
 													<div class="tt-item-close">
-														<a href="#" class="tt-btn-close"></a>
+														<a href="#" data-id="<?php echo $row["cart_id"] ?>" class="tt-btn-close"></a>
 													</div>
 												</div>
-												<div class="tt-item">
-													<a href="product.html">
-														<div class="tt-item-img">
-															<img src="images/loader.svg" data-src="images/product/product-02.jpg" alt="">
-														</div>
-														<div class="tt-item-descriptions">
-															<h2 class="tt-title">Flared Shift Dress</h2>
-															<ul class="tt-add-info">
-																<li>Yellow, Material 2, Size 58,</li>
-																<li>Vendor: Addidas</li>
-															</ul>
-															<div class="tt-quantity">1 X</div> <div class="tt-price">$18</div>
-														</div>
-													</a>
-													<div class="tt-item-close">
-														<a href="#" class="tt-btn-close"></a>
-													</div>
-												</div>
+												
+
+<?php  
+
+		
+}
+}
+
+?>
+
+
+
+
+
 											</div>
 											<div class="tt-cart-total-row">
 												<div class="tt-cart-total-title">SUBTOTAL:</div>
-												<div class="tt-cart-total-price">$324</div>
+												<div class="tt-cart-total-price"><?php echo $totalPrice; ?></div>
 											</div>
 											<div class="tt-cart-btn">
 												<div class="tt-item">
@@ -661,7 +683,7 @@ $result_product = $query_product->fetchAll(PDO::FETCH_ASSOC);
 					<!-- tt-account -->
 					<div class="tt-desctop-parent-account tt-parent-box">
 						<div class="tt-account tt-dropdown-obj">
-							<button class="tt-dropdown-toggle"  data-tooltip="My Account" data-tposition="bottom"><i class="icon-f-94"></i></button>
+							<a href="login.php" class="tt-dropdown-toggle"  data-tooltip="My Account" data-tposition="bottom"><i class="icon-f-94"></i></a>
 							<div class="tt-dropdown-menu">
 								<div class="tt-mobile-add">
 									<button class="tt-close">Close</button>
@@ -673,7 +695,7 @@ $result_product = $query_product->fetchAll(PDO::FETCH_ASSOC);
 									    <li><a href="compare.html"><i class="icon-n-08"></i>Compare</a></li>
 									    <li><a href="page404.html"><i class="icon-f-68"></i>Check Out</a></li>
 									    <li><a href="login.html"><i class="icon-f-76"></i>Sign In</a></li>
-									    <li><a href="page404.html"><i class="icon-f-77"></i>Sign Out</a></li>
+									    <li><a href="../../auth/logout.php"><i class="icon-f-77"></i>Sign Out</a></li>
 									    <li><a href="create-account.html"><i class="icon-f-94"></i>Register</a></li>
 									</ul>
 								</div>
@@ -930,7 +952,7 @@ $result_product = $query_product->fetchAll(PDO::FETCH_ASSOC);
 					<div class="content-indent container-fluid-custom-mobile-padding-02">
 						<div class="tt-filters-options"  id="js-tt-filters-options">
 							<h1 class="tt-title">
-								WOMEN <span class="tt-title-total">(69)</span>
+								PRODUCTS <span class="tt-title-total"></span>
 							</h1>
 							<div class="tt-btn-toggle">
 								<a href="#">FILTER</a>
@@ -996,7 +1018,8 @@ if($result_product){
 								<a href="#" class="tt-btn-wishlist" data-tooltip="Add to Wishlist" data-tposition="left"></a>
 								<a href="#" class="tt-btn-compare" data-tooltip="Add to Compare" data-tposition="left"></a>
 											<a href="product.html">
-												<span class="tt-img"><img src="<?php echo $row["image"]; ?>" alt=""></span>
+											<span class="tt-img"><img src="<?php echo '../../backend/uploads/' . $row["image"]; ?>" alt=""></span>
+
 												<!-- <span class="tt-img-roll-over"><img src="images/loader.svg" data-src="images/product/product-18-01.jpg" alt=""></span> -->
 											</a>
 										</div>
@@ -1019,7 +1042,7 @@ if($result_product){
 											</div>
 											<div class="tt-product-inside-hover">
 									<div class="tt-row-btn">
-										<a href="#" class="tt-btn-addtocart thumbprod-button-bg" data-toggle="modal" data-target="#modalAddToCartProduct">ADD TO CART</a>
+										<a href="#" class="tt-btn-addtocart thumbprod-button-bg" id="submit" data-id="<?php echo $row["id"]; ?>" data-toggle="modal" data-target="#modalAddToCartProduct">ADD TO CART</a>
 									</div>
 									<div class="tt-row-btn">
 										<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"></a>
@@ -1340,7 +1363,7 @@ if($result_product){
 
 
 <!-- modal (AddToCartProduct) -->
-<div class="modal  fade"  id="modalAddToCartProduct" tabindex="-1" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+<div class="modal  fade"  id="" tabindex="-1" role="dialog" aria-label="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content ">
 			<div class="modal-header">
@@ -1570,46 +1593,74 @@ if($result_product){
 <script>window.jQuery || document.write('<script src="external/jquery/jquery.min.js"><\/script>')</script>
 <script defer src="js/bundle.js"></script>
 
-
+<script src="../../../project/plugins/toastr/toastr.min.js"></script>
 <a href="#" class="tt-back-to-top" id="js-back-to-top">BACK TO TOP</a>
 <script src="separate-include/listing/listing.js"></script>
 
 <script>
-  $(document).ready(function () {
-      $("#submit").click(function () {
-        
-        event.preventDefault();
-        let isValid = $("#registerForm").valid();
-        if(isValid){
-          // submitHandler: function(form) {
-          var frm = $("#registerForm").serializeArray();
-          // console.log(frm);
-          $.ajax({
+ $(document).ready(function () {
+    $(".tt-btn-addtocart").on('click', function() {
+        var dataId = $(this).attr("data-id");
+        // console.log(dataId);
+		
+		$.ajax({
             type: "POST",
-            url: "../backend/authcontroller.php",
+            url: "../../backend/productController.php",
             data:JSON.stringify({
-              action:'registernew',
-              data:frm,
+              action:'insertCart',
+              data:dataId,
             }),
             dataType:"json",
             success: function (response) {
-              if (response["status"] == 200) {
-                // alert("register");
-
-                // toastr.success(response["message"]);
-                                window.location.href = "./login1.php";
-            }
+				console.log(response);
+				if (response["status"] == 200) {
+    toastr.success(response["message"]);
+    setTimeout(function() {
+        
+		window.location.reload();
+    }, 500); 
+}
             else {
-                toastr.error(response["message"]);
+				// toastr.error(response["message"]);
             }
             },
             error: function (xhr, status, error) {
-              console.error(error);
+            //   console.error(error);
             }
           })
-        } 
-      })
-    })
+    });
+
+
+
+	$(".tt-btn-close").on('click', function() {
+        var dataId = $(this).attr("data-id");
+	  $.ajax({
+		type : "POST",
+		url: "../../backend/productController.php",
+		data:JSON.stringify({
+              action:'deletCart',
+              data:dataId,
+            }),
+            dataType:"json",
+			success:function(response){
+				if (response["status"] == 200) {
+    toastr.success(response["message"]);
+    setTimeout(function() {
+        
+		window.location.reload();
+    }, 500); 
+}
+				
+				else{
+					toastr.error(response["message"]);
+				}
+			}
+	  })
+	 
+	});
+	
+});
+
 
 </script>
 </body>

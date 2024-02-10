@@ -12,7 +12,7 @@
 
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="./plugins/toastr/toastr.min.css">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -33,7 +33,9 @@
     <div class="d-flex justify-content-end">
   <a href="./auth/addColleaction.php" id="addProductBtn" class="btn btn-info btn-sm">Add collection</a>
 </div>
-
+<div class="d-flex justify-content-end mr-2">
+<a href="./userData.php"><i class="fa-solid fa-xmark" style="font-size: 24px;"></i></a>
+</div>
 </table>
 <!-- <button type="submit" id="modal-default" onclick="confrimChange()" class="btn btn-info btn-sm">change</button> -->
 <!-- <button type="submit" id="cnfBtn" class="btn btn-info btn-sm">delete</button> -->

@@ -1,5 +1,10 @@
 <?php  
+
 session_start();
+echo $_SESSION["id"];
+// if(empty($_SESSION['id'])){
+//   header("Location:../../auth/login1.php");
+// }
 
 
  $conn = new PDO("mysql:host=localhost;dbname=db_auth", 'root', '');
@@ -9,7 +14,7 @@ session_start();
  $query->execute();
  $result = $query->fetchAll(PDO::FETCH_ASSOC);
 	// echo "<pre>";
-	// print_r($result[0]["full_name"]);	
+	// print_r($result);	
 
 ?>
 
@@ -920,7 +925,7 @@ session_start();
 		</div>
 	</div>
 </footer>
-<div class="tt-promo-fixed" id="js-tt-promo-fixed">
+<div class="tt-promo-fixed" id="">
 	<button class="tt-btn-close"></button>
 	<div class="tt-img">
 		<a href="product.html"><img src="images/loader.svg" data-src="images/product/product-14.jpg" alt=""></a>
@@ -1238,13 +1243,15 @@ session_start();
             }),
             dataType:"json",
 			success: function (response) {
+				
 				console.log(response);
 				if (response["status"] == 202) {
     toastr.success(response["message"]);
     setTimeout(function() {
-        window.location.href = "./index.php";
+        // window.location.href = "./index.php";
     }, 1000); // 2000 milliseconds (2 seconds) delay before redirection
-} else {
+} else 
+{
     toastr.error(response["message"]);
 }
 

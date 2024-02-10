@@ -1,4 +1,12 @@
+<?php  
+ $conn = new PDO("mysql:host=localhost;dbname=db_auth", 'root', '');
 
+ $query = $conn->prepare("SELECT * FROM tbl_collection");
+//  $query->bindParam(':id', $_SESSION["id"]);
+ $query->execute();
+ $result = $query->fetchAll(PDO::FETCH_ASSOC);
+ 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,10 +57,19 @@
                     <label for="exampleInputEmail1">brand</label>
                     <select type="text" class="form-control" id="brand" name="brand" placeholder="Enter email">
                     <option selected disabled value="">Choose...</option>
- 
-                        <option>d</option>
-                        <option>d</option>
-                        <option>d</option>
+ <?php  
+if($result){
+  foreach($result  as $row){
+
+
+?>
+                        <option class="collection_id" data-id="<?php echo $row["id"]; ?>"><?php echo $row["name"]; ?></option>
+    <?php  
+    
+  }
+}
+    
+    ?>
 </select>
                   </div>
                   <div class="form-group">
@@ -181,10 +198,11 @@
   $(document).ready(function () {
     $("#submit").click(function (e) {
         e.preventDefault();
+        var selectedId = $(".collection_id:selected").data("id");
 
         var formData = new FormData();
         formData.append("product_name", $("#product_name").val());
-        formData.append("brand", $("#brand").val());
+        formData.append("selectedId", selectedId);
         formData.append("price", $("#price").val());
         formData.append("slug", $("#slug").val());
         formData.append("tag", $("#tag").val());
@@ -192,10 +210,10 @@
         var image = $("#image")[0].files[0];
         formData.append("image", image);
        
-        for (var pair of formData.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
-    }
-
+    //     for (var pair of formData.entries()) {
+    //     console.log(pair[0] + ', ' + pair[1]);
+    // }
+ 
     $.ajax({
     url: "../backend/productController.php",
     type: "POST",
@@ -203,12 +221,12 @@
     processData: false,
     contentType: false,
     success: function (response) {
-   
+   console.log(response)
             // response = JSON.parse(response);
             // if (response.status == 200) {
             //     toastr.success(response.message);
             //     setTimeout(function () {
-                    // window.location.href = '../productData.php';
+                    window.location.href = '../productData.php';
             //     }, 2000);
             // } else {
             //     toastr.error(response.message);

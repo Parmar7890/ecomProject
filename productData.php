@@ -12,7 +12,7 @@
 
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="./plugins/toastr/toastr.min.css">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -21,6 +21,10 @@
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
   </div>
+  <div class="d-flex justify-content-end mr-2">
+<a href="./userData.php"><i class="fa-solid fa-xmark" style="font-size: 24px;"></i></a>
+</div>
+
 
  
   <?php
@@ -32,6 +36,7 @@
   <table id="productTable">
     <div class="d-flex justify-content-end">
   <a href="./auth/addProduct.php" id="addProductBtn" class="btn btn-info btn-sm">Add product</a>
+  <button type="button" class="btn btn-info btn-sm ml-3" data-toggle="modal" data-target="#deleteBtn">delete Modal</button>
 </div>
 
 </table>
@@ -48,7 +53,7 @@ include_once('footer.php');
   </aside>
 
 </div>
-<button type="button" class="btn btn-default" data-toggle="modal" data-target="#deleteBtn">delete Modal</button>
+
 <!-- <button type="submit" id="cnfBtn">deletePro</button> -->
 <!--------------------------- /.modal start------------------>
 <div class="modal fade" id="deleteBtn">
@@ -124,7 +129,7 @@ $(document).ready(function(){
             }, 
                 {
                     title: "BRAND",
-                    data: "brand",
+                    data: "brand_name",
                     orderable:false,            
             }, 
                 {
@@ -145,22 +150,26 @@ $(document).ready(function(){
             }, 
            
             {
-              title:"IMAGE",
-              data:"image",
-                targets: [0], 
-                render: function (data, type, row, meta) {
-        // Assuming 'data' contains the URL of the image
-        var imageHTML = '<img src="' + data + '" style="max-width: 100px; max-height: 100px; margin-right: 30px;">';
+    title: "IMAGE",
+    data: "image",
+    targets: [0],
+    render: function (data, type, row, meta) {
+        //  console.log(data);
+        var imagePath = './backend/uploads/' + data;
+        var imageHTML = '<img src="' + imagePath + '" style="max-width: 100px; max-height: 100px; margin-right: 30px;">';
         var inputHTML = '<input type="file">';
 
         return imageHTML + inputHTML;
     }
-            }
-         
+}
+            
         ],
         order: [[1,'asc']]
         
     });
+
+
+
     selectedIds = []; 
     $("#confirmDelete").click(function(){
   $("#productTable tfoot th").each(function () {
@@ -182,12 +191,6 @@ $(document).ready(function(){
     });
    
    
-
-
-
-
-   
-
   $.ajax({
     type:"POST",
     url:"./backend/productController.php",

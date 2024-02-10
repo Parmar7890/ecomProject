@@ -22,8 +22,26 @@ session_start();
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <link rel="stylesheet" href="./plugins/toastr/toastr.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
- 
+<!-- <style>
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px; /* Adjust width as needed */
+    height: 100%; /* Fill the entire height of the viewport */
+    background-color: #333; /* Example background color */
+    color: #fff; /* Example text color */
+    z-index: 100; /* Make sure the sidebar stays above the main content */
+}
+
+.content {
+    margin-left: 250px; /* Adjust to match the width of the sidebar */
+    padding: 20px;
+}
+</style>  -->
 </head>
+
+
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
@@ -57,7 +75,9 @@ include_once('footer.php');
   </aside>
   <!-- /.control-sidebar -->
 </div>
-<div><button type="button" class="btn btn-default" data-toggle="modal" data-target="#deleteBtn">delete Modal</button></div>
+<div><button type="button" class="btn btn-default" id="deleteBtn" data-toggle="modal" data-target="#deleteBtn">delete Modal</button></div>
+
+<!-- <button type="button" class="btn btn-info btn-P -->
  <!--------------------------- /.modal start------------------>
 <div class="modal fade" id="deleteBtn">
           <div class="modal-dialog">
@@ -166,6 +186,9 @@ var table = $("#myTable").DataTable({
         "columns": [2,3,4,5],
     
     });
+
+
+
     selectedIds = [];
     $('#myTable thead').on('click', '#main-check', function () {
         var isChecked = $(this).prop('checked');
